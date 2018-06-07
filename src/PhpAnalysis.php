@@ -15,6 +15,11 @@ define('UCS2', 'ucs-2be');
 class PhpAnalysis
 {
     
+    /**
+     * @var object 对象实例
+     */
+    protected static $instance;
+
     //hash算法选项
     public $mask_value = 0xFFFF;
     
@@ -119,6 +124,19 @@ class PhpAnalysis
             $h &= 0x7fffffff;
         }
         return ($h % $this->mask_value);
+    }
+
+    /**
+     * 实例化
+     *
+     * @return void
+     */
+    public static function instance($source_charset='utf-8', $target_charset='utf-8', $load_all=true, $source='')
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new static($source_charset, $target_charset, $load_all, $source);
+        }
+        return self::$instance;
     }
     
     /**
